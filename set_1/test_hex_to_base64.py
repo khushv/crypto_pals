@@ -2,7 +2,7 @@ import unittest
 from hex_to_base64 import convert_hex_to_base64
 
 class TestCase(unittest.TestCase):
-    """Test for first class"""
+    """Test for first challenge"""
 
     def test_hex_to_base64(self):
         """Does it convert hex to base64?"""
