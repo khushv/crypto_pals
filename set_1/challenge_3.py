@@ -74,18 +74,19 @@ def my_levenshtein(s1, s2):
 
 
 
-def xor_brute(text):
+def xor_brute(text, cut=5):
 	list_chars = []
 	for i in range(0, 255):
 		xord = xor_single(text, i)
 		xord_freq = character_frequency(xord)
 		if xord_freq:
 			lev = etaoin_frequency(xord_freq)
+			#add to list, the char count, xor_bit and the string
 			list_chars.append((lev, i, xord))
 	sorted_char_freq = sorted(list_chars, reverse=True)
-	print(sorted_char_freq[]) # add top 5 for less text
+	return sorted_char_freq[:cut] # add top 5 for less text
 
 if __name__ == '__main__':
 
 	a = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
-	xor_brute(a)
+	print(xor_brute(a))
