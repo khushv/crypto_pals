@@ -12,6 +12,7 @@ if __name__ == '__main__':
 #	with open("4.txt") as f:
 #		read_data = f.readline()
 	lines = [line.rstrip('\n') for line in open('4.txt')]
+	#shows top 2 results
 	bruteforce_xor = [xor_brute(line, 2) for line in lines]
 	print(sorted(bruteforce_xor), "\n\n")
 
