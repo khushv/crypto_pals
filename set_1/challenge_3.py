@@ -10,7 +10,13 @@ def xor_single(sample, xor_char):
 	output = bytearray()
 	for i in in_bytes:
 		output.append(i^xor_char)
-	#print(output.__repr__())
+	return output
+
+
+def xor_single_bytes(sample, xor_char):
+	output = bytearray()
+	for i in sample:
+		output.append(i^xor_char)
 	return output
 
 def character_frequency(bytearray_sample):
@@ -73,7 +79,6 @@ def my_levenshtein(s1, s2):
 	return previous_row[-1]
 
 
-
 def xor_brute(text, cut=5):
 	list_chars = []
 	for i in range(0, 255):
@@ -85,6 +90,21 @@ def xor_brute(text, cut=5):
 			list_chars.append((lev, i, xord))
 	sorted_char_freq = sorted(list_chars, reverse=True)
 	return sorted_char_freq[:cut] # add top 5 for less text
+
+
+def xor_brute_bytes(text, cut=5):
+	list_chars = []
+	for i in range(0, 255):
+		xord = xor_single_bytes(text, i)
+		xord_freq = character_frequency(xord)
+		if xord_freq:
+			lev = etaoin_frequency(xord_freq)
+			#add to list, the char count, xor_bit and the string
+			list_chars.append((lev, i, xord))
+	sorted_char_freq = sorted(list_chars, reverse=True)
+	return sorted_char_freq[:cut] # add top 5 for less text
+
+
 
 if __name__ == '__main__':
 
