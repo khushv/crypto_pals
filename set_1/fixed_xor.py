@@ -5,11 +5,10 @@ import binascii
 def fixed_xor(a, b):
     hex_a = string_to_bytearray(a)
     hex_b = string_to_bytearray(b)
-    if len(a) is len(b):
-        result = ""
-        for x, y in zip(hex_a, hex_b):
-            result += "%X" % (x^y)
-        return result.lower()
+    if len(a) == len(b):
+        result = ''.join([('%X' % (x^y)).lower() for x, y in zip(hex_a, hex_b)])        
+
+        return result
     else:
         raise Exception
 

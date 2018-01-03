@@ -1,15 +1,18 @@
 import base64
+import argparse
+
+def string_to_bytearray(sample):
+	return bytearray.fromhex(sample)
+
+
+def bytearray_to_base64(sample):
+	return base64.b64encode(sample)
+
 
 def convert_hex_to_base64(sample):
 	converted_bytes = string_to_bytearray(sample)
 	return bytearray_to_base64(converted_bytes)
 
-
-def string_to_bytearray(sample):
-	return bytearray.fromhex(sample)
-
-def bytearray_to_base64(sample):
-	return base64.b64encode(sample)
 
 
 if __name__ == '__main__':
