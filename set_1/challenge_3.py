@@ -16,7 +16,10 @@ def xor_single(sample, xor_char):
 def xor_single_bytes(sample, xor_char):
 	output = bytearray()
 	for i in sample:
-		output.append(i^xor_char)
+		if i == xor_char:
+			output.append(i)
+		else:
+			output.append(i^xor_char)
 	return output
 
 def character_frequency(bytearray_sample):
@@ -94,17 +97,46 @@ def xor_brute(text, cut=5):
 
 def xor_brute_bytes(text, cut=5):
 	list_chars = []
-	for i in range(0, 255):
+	#for i in range(0, 255):
+#### Suggest changing from 32-126 or 65-122.
+	for i in range(32, 126):
 		xord = xor_single_bytes(text, i)
-		xord_freq = character_frequency(xord)
-		if xord_freq:
-			lev = etaoin_frequency(xord_freq)
-			#add to list, the char count, xor_bit and the string
+		if 1==1:
+			lev = modified_frequency(xord)
+			#add to list: the char count, xor_bit and the string
 			list_chars.append((lev, i, xord))
 	sorted_char_freq = sorted(list_chars, reverse=True)
 	return sorted_char_freq[:cut] # add top 5 for less text
 
 
+def modified_frequency(xord_string):
+	count = 0
+	for character in xord_string:
+		if character == 32:
+			count += 1
+		elif character == 46:
+			count += 1
+		elif 65 <= character <= 90:
+			count += 1 
+		elif 97 <= character <= 122:
+			count += 1
+	return count
+
+"""
+def xor_brute_bytes(text, cut=5):
+	list_chars = []
+	#for i in range(0, 255):
+#### Suggest changing from 32-126 or 65-122.
+	for i in range(32, 126):
+		xord = xor_single_bytes(text, i)
+		xord_freq = character_frequency(xord)
+		if xord_freq:
+			lev = etaoin_frequency(xord_freq)
+			#add to list: the char count, xor_bit and the string
+			list_chars.append((lev, i, xord))
+	sorted_char_freq = sorted(list_chars, reverse=True)
+	return sorted_char_freq[:cut] # add top 5 for less text
+"""
 
 if __name__ == '__main__':
 
