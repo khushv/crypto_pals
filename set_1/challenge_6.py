@@ -26,18 +26,16 @@ def likely_candidate(text, min=2, max=50, num_results=3):
 
 def likely_candidate_mod(text, min=2, max=50, num_results=5):
 	result = {}
-	result2 = {}
 	for i in range(min, max):
 		# calculate hamming distance and divide by keysize
 		first_block = mod_ham(text[0:i], text[i:2*i])/i
 		second_block = mod_ham(text[2*i:3*i], text[3*i:4*i])/i
 		third_block = mod_ham(text[4*i:5*i], text[5*i:6*i])/i
-		result2[i] = (first_block + second_block + third_block)/3     
-		result[i] = (mod_ham(text[0:i], text[i:2 * i])/i)
+		fourth_block = mod_ham(text[5*i:6*i], text[6*i:7*i])/i
+		result[i] = (first_block + second_block + third_block)/4     
 	# returns keysize with smallest normalised hamming distance
-	#print(result)
-	print(result2)
-	return sorted(result2, key=result.get)[:num_results]
+	#import pdb; pdb.set_trace()
+	return sorted(result, key=result.get)[:num_results]
 	
 	
 	
@@ -106,12 +104,12 @@ if __name__ == '__main__':
 	# print(mod_ham(a,b))
 
 	crypt_bytes = base64_file_to_bytes('6.txt')
-	x = likely_candidate_mod(crypt_bytes, 3, 30, 30)
+	x = likely_candidate_mod(crypt_bytes, 3, 40, 30)
 	print(x)
 	
 	#problem with bruteforce method
-	answers = bruteforce(x, crypt_bytes, 15)
-	#print("Possible keys:" , answers)
+	answers = bruteforce(x, crypt_bytes, 5)
+	print("Possible keys:" , answers)
 	
 	#print(decrypt_xor(answers[0], crypt_bytes))
 	#for answer in answers:
