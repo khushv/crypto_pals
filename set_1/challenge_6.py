@@ -20,7 +20,6 @@ def likely_candidate(text, min=2, max=50, num_results=3):
         # calculate hamming distance and divide by keysize
 		result[i] = (mod_ham(text[0:i], text[i:2 * i])/i)
     # returns keysize with smallest normalised hamming distance
-	print(result)
 	return sorted(result, key=result.get)[:num_results]
 
 
@@ -38,43 +37,29 @@ def likely_candidate_mod(text, min=2, max=50, num_results=5):
 	return sorted(result, key=result.get)[:num_results]
 	
 	
-	
 def keysize_blocks(keysize, ciphertext):
 	return [ciphertext[i:i+keysize] for i in range(0, len(ciphertext), keysize)]
 
 
 def transpose_block(keysize, ciphertext):
-	transposed = []
-	for i in range(0, keysize):
-		transposed.append(ciphertext[i:len(ciphertext):keysize])
-	return transposed
+	return [ciphertext[i:len(ciphertext):keysize] for i in range(0, keysize)]
 
 
-def bruteforce_column(column_cipher, results):
-	#print("*********")
-	#print("Column ciphertext: ", column_cipher)
-	x = xor_brute_bytes(column_cipher, results)
-	#print(x)
-	return [chr(element[1]) for element in x]
+def bruteforce_column(column_cipher, results): 
+	return [chr(element[1]) for element in xor_brute_bytes(column_cipher, results)]
 
 
 def bruteforce_per_keysize(keysize, ciphertext, results=5):
-	#print(keysize)
 	transposed_blocks = transpose_block(keysize, ciphertext)
-	#print(transposed_blocks)
 	possible_key =  [""] * results
-	#print("length of array: ", len(possible_key))
 	for column in transposed_blocks:
 		possible_chars = bruteforce_column(column, results)
-		#print("Possible chars: ", possible_chars)
 		for poss_char in range(results):
 			possible_key[poss_char] += possible_chars[poss_char]
 	return  possible_key
 
 
-
 def bruteforce(keysizes, ciphertext, results):
-	#keysizes = [29]
 	possible_keys = []
 	for size in keysizes:
 		possible_keys.extend(bruteforce_per_keysize(size, ciphertext, results))
@@ -82,7 +67,6 @@ def bruteforce(keysizes, ciphertext, results):
 
 
 def decrypt_xor(key, ciphertext):
-	#print("Ciphertext: ", ciphertext)
 	decrypted = bytearray()
 	key_len = len(key)
 	pointer = 0
@@ -92,11 +76,11 @@ def decrypt_xor(key, ciphertext):
 			x = character
 		else:
 			x = character ^ decrypt_key
-		#print(chr(character), "-", character, " xors with ", decrypt_key, chr(decrypt_key), "equals ", x, " in chr() ", chr(x))
 		decrypted.append(x)
 		pointer += 1
 	return decrypted
- 
+
+
 if __name__ == '__main__':
 	a = text_to_bytes('this is a test')
 	b = text_to_bytes('wokka wokka!!!')
@@ -105,15 +89,11 @@ if __name__ == '__main__':
 
 	crypt_bytes = base64_file_to_bytes('6.txt')
 	x = likely_candidate_mod(crypt_bytes, 3, 40, 30)
-	print(x)
+	#print(x)
 	
 	#problem with bruteforce method
 	answers = bruteforce(x, crypt_bytes, 5)
 	print("Possible keys:" , answers)
-	
-	#print(decrypt_xor(answers[0], crypt_bytes))
-	#for answer in answers:
-	#	print(decrypt_xor(answer, crypt_bytes))
 	
 
 
