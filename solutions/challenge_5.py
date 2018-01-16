@@ -17,10 +17,10 @@ def xor_bytes(sample, key):
         #print("key to xor: ", key[key_pointer % key_len])
         result.append(i ^ key[key_pointer % key_len])
         key_pointer += 1
-    return result
+    return bytes(result)
 
 
-def byte_to_string(sample):
+def byte_to_hex(sample):
     return binascii.hexlify(sample)
 
 
@@ -28,7 +28,7 @@ def repeating_key_xor(sample, key):
     sample_byte = text_to_bytes(sample)
     key_byte = text_to_bytes(key)
     sample_xor = xor_bytes(sample_byte, key_byte)
-    return byte_to_string(sample_xor)
+    return sample_xor
 
 if __name__ == '__main__':
     a = "Burning 'em, if you ain't quick and nimble\n" \
@@ -39,4 +39,5 @@ if __name__ == '__main__':
     # output should be
     #0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272
     #a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f
-    print(repeating_key_xor(a, key))
+    xord = repeating_key_xor(a, key)
+    print(byte_to_hex(xord))
