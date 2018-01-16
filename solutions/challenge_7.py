@@ -7,10 +7,10 @@ def decrypt_AES_ECB_bytes(cipher_bytes, key):
 		key = key.encode('ascii')
 	cipher_obj = AES.new(key, AES.MODE_ECB)
 	decrypted_bytes = cipher_obj.decrypt(cipher_bytes)
-	return decrypted_bytes.decode('ascii')
+	return decrypted_bytes
 	
 
 if __name__ == '__main__':
 	cipher_text = base64_file_to_bytes("7.txt")
-	x = decrypt_AES_ECB_bytes(cipher_text, "YELLOW SUBMARINE")
+	x = decrypt_AES_ECB_bytes(cipher_text, "YELLOW SUBMARINE").decode('ascii')
 	print(x)

@@ -13,8 +13,6 @@ def xor_bytes(sample, key):
     key_len = len(key)
     result = bytearray()
     for i in sample:
-        #print("letter to xor: ", i)
-        #print("key to xor: ", key[key_pointer % key_len])
         result.append(i ^ key[key_pointer % key_len])
         key_pointer += 1
     return bytes(result)
@@ -41,3 +39,4 @@ if __name__ == '__main__':
     #a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f
     xord = repeating_key_xor(a, key)
     print(byte_to_hex(xord))
+    
