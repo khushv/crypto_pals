@@ -21,7 +21,7 @@ def encrypt_AES_CBC(plaintext, iv, key, block_size):
 	xored_plaintext  = xor_bytes(plaintext.pop(0), iv)
 	encrypted_bytes += encrypt_AES_ECB(xored_plaintext, key)
 	while plaintext:
-		xored_plaintext = xor_bytes(plaintext.pop(0), encrypted_bytes[-BLOCK_SIZE:])
+		xored_plaintext = xor_bytes(plaintext.pop(0), encrypted_bytes[-block_size:])
 		encrypted_bytes += encrypt_AES_ECB(xored_plaintext, key)
 	return encrypted_bytes
 
