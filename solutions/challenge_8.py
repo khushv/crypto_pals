@@ -1,7 +1,7 @@
 import base64
 from challenge_6 import mod_ham
 from binascii import unhexlify
-from collections import Counter
+
 
 def hex_file_to_bytes(filename):
 	with open(filename) as f:

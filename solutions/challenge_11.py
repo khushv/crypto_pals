@@ -9,6 +9,7 @@ def detect_ecb(plaintext, block_size):
 	plaintext = keysize_blocks(block_size, plaintext)
 	#print("Number of plaintext: ", len(plaintext))
 	#print("Set number: ", len(set(plaintext)))
+	print("ECB") if len(set(plaintext)) != len(plaintext) else print("CBC")
 	if len(set(plaintext)) != len(plaintext):
 		print("ECB")
 		#return True
@@ -40,6 +41,7 @@ if __name__ == '__main__':
 	BLOCK_SIZE = 16
 	my_input = "A" * 33
 	plaintext = my_input.encode('ascii')
+	import pdb; pdb.set_trace()
 	print(len(plaintext))
 	while 1:
 		encrypted = encryption_oracle(plaintext, BLOCK_SIZE)
