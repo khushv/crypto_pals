@@ -18,7 +18,7 @@ fake_string = "ZmFrZSBzdHJpbmcK"
 def ecb_oracle(plain_bytes, key, block_size):
 	if isinstance(plain_bytes, str):
 		plain_bytes = plain_bytes.encode('ascii') 
-	import pdb; pdb.set_trace()
+	#import pdb; pdb.set_trace()
 	secret_string = b64decode(fake_string)
 	plain_bytes += secret_string
 	plain_bytes = pad(plain_bytes, block_size)
@@ -30,10 +30,8 @@ if __name__ == '__main__':
 	key_size = 16 # 24 or 32
 	my_input = "A" * 33
 	key = sys.argv[1].encode('utf-8', 'surrogateescape')
-	if len(key) != 16:
-		raise Exception
 	encrypted_string = ecb_oracle(my_input, key, BLOCK_SIZE)
-	print(encrypted_string)
+	
 
 
 """

@@ -12,10 +12,10 @@ def detect_ecb(plaintext, block_size):
 	print("ECB") if len(set(plaintext)) != len(plaintext) else print("CBC")
 	if len(set(plaintext)) != len(plaintext):
 		print("ECB")
-		#return True
+		return True
 	else:
 		print("CBC")
-		#return False
+		return False
 	
 	
 def encryption_oracle(plain_bytes, block_size):
