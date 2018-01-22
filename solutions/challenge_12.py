@@ -2,6 +2,7 @@ import sys
 from base64 import b64decode
 from os import urandom
 from challenge_6 import keysize_blocks
+from challenge_7 import decrypt_AES_ECB_bytes
 from challenge_9 import pad
 from challenge_10 import encrypt_AES_ECB
 from challenge_11 import detect_ecb
@@ -23,7 +24,7 @@ def ecb_oracle(plain_bytes, key, block_size):
 	secret_string = b64decode(fake_string)
 	plain_bytes += secret_string
 	plain_bytes = pad(plain_bytes, block_size)
-	print("Length of plaintext: ", len(plain_bytes))
+	#print("Length of plaintext: ", len(plain_bytes))	
 	return encrypt_AES_ECB(plain_bytes, key)
 
 
@@ -32,10 +33,12 @@ def ecb_oracle(plain_bytes, key, block_size):
 if __name__ == '__main__':
 	#setup
 	BLOCK_SIZE = 16
-	key_size = 16 # 24 or 32
-	my_input = "A" * 16 + "A" * 15 
+	key_size = BLOCK_SIZE # can also be 24, 32
 	key = sys.argv[1].encode('utf-8', 'surrogateescape')
+	
+	my_input = "A" * 16 + "A" * 15 + "A"
 	encrypted_string = ecb_oracle(my_input, key, BLOCK_SIZE)
+	encrypted_blocks = keysize_blocks(BLOCK_SIZE, encrypted_string)
 	print("Length of encrypted: ", len(encrypted_string))
 	value = detect_ecb(encrypted_string, BLOCK_SIZE)
 	print("ECB mode detected: ", value)
@@ -44,10 +47,13 @@ if __name__ == '__main__':
 	for i in range(32, 127):
 		value = chr(i)
 		input = "A" * 15 + value
-		key = ecb_oracle(input, key, BLOCK_SIZE)[:BLOCK_SIZE]
+		print(input)
+		key = ecb_oracle(input, key, BLOCK_SIZE)[:16]
+		print(key)
 		key_dictionary[key] = value
-	print(key_dictionary)
-
+	#print(key_dictionary)
+	#print("First letter is: ", key_dictionary[encrypted_blocks[1]])
+	import pdb; pdb.set_trace()
 
 """
 run in bash first:

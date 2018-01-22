@@ -9,7 +9,6 @@ def detect_ecb(plaintext, block_size):
 	plaintext = keysize_blocks(block_size, plaintext)
 	#print("Number of plaintext: ", len(plaintext))
 	#print("Set number: ", len(set(plaintext)))
-	print("ECB") if len(set(plaintext)) != len(plaintext) else print("CBC")
 	if len(set(plaintext)) != len(plaintext):
 		print("ECB")
 		return True
