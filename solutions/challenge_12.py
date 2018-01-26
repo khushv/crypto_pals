@@ -17,50 +17,54 @@ fake_string = "ZmFrZSBzdHJpbmcK"
 
 
 
-def ecb_oracle(plain_bytes, block_size=16):
+def ecb_oracle(plain_bytes, block_size):
 	if isinstance(plain_bytes, str):
 		plain_bytes = plain_bytes.encode('ascii') 
 	secret_string = b64decode(fake_string)
 	plain_bytes += secret_string
-	plain_bytes = pad(plain_bytes, block_size)	
+	plain_bytes = pad(plain_bytes, block_size)
 	return encrypt_AES_ECB(plain_bytes, en_key)
 
 
-def find_letter(target_block, input, encryption_oracle):
-	import pdb; pdb.set_trace()
+def find_letter(target_block, input, decoded_key, encryption_oracle, block_size):
+	#import pdb; pdb.set_trace()
 	letter_dict = {}
+	# watch out, hardcoding blocksize here
+	input += decoded_key
+	input = input[-(block_size-1):]
+	print(input)
 	for i in range(32, 127):
 		value = chr(i)
 		plaintext = input + value
-		encrypted_input = encryption_oracle(plaintext)[:16]
+		#print(plaintext)
+		encrypted_input = encryption_oracle(plaintext, block_size)[:16]
 		letter_dict[encrypted_input] = value
-	print(len(letter_dict))
+	#import pdb; pdb.set_trace()
 	return letter_dict[target_block]
 
+
+
 if __name__ == '__main__':
-	#setup
-	BLOCK_SIZE = 16
-	key_size = BLOCK_SIZE # can also be 24, 32
 	en_key = sys.argv[1].encode('utf-8', 'surrogateescape')
-	"""	
-	#sanity check
-	test_input = "A" * 16 + "A" * 15 + "A"
-	encrypted = ecb_oracle(test_input, BLOCK_SIZE)
-	decrypted = decrypt_AES_ECB_bytes(encrypted[:16], key)
-	print("Does input: ", test_input, " match decrypted output: ", 
-		decrypted.decode('ascii'), " ?")
-	"""
-	my_input = "A" * 16 + "A" * 15 
-	print("Input: ", my_input)
-	print("Length: ", len(my_input))	
+	BLOCK_SIZE = 16
+	my_input = "A" * 31
 	encrypted = ecb_oracle(my_input, BLOCK_SIZE)
 	encrypted_blocks = keysize_blocks(BLOCK_SIZE, encrypted)
-	print("Encrypted string: ", encrypted_blocks)
-	print("Encrypted length: ", len(encrypted))
-	x = find_letter(encrypted_blocks[0], "A"*15, ecb_oracle)
-	print(x)
-
-
+	print("Input: ", my_input)
+	print("Encrypted: ", encrypted_blocks)
+	x = find_letter(encrypted_blocks[1], my_input, "", ecb_oracle, BLOCK_SIZE)
+	decoded_key = "" + x
+	print("Letter found: ", x)
+	
+	my_input = "A" * 30
+	print("Input: ", my_input)
+	encrypted = ecb_oracle(my_input, BLOCK_SIZE)
+	encrypted_blocks = keysize_blocks(BLOCK_SIZE, encrypted)
+	print("Encrypted: ", encrypted_blocks)
+	x = find_letter(encrypted_blocks[1], my_input, decoded_key, ecb_oracle, BLOCK_SIZE)
+	decoded_key += x
+	print("Letter found: ", x)
+	import pdb; pdb.set_trace()
 
 """
 run in bash first:
