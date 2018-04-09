@@ -10,6 +10,24 @@ def pkcs7_pad_validate(plaintext):
 			raise Exception("Invalid padding")
 	return True
 	
+def pkcs7_pad_validate_bytes(plaintext):
+	if len(plaintext) % 16 == 0:
+		return True
+	print("**************")
+	print(plaintext)
+	last_letter = plaintext[-1]
+	print(last_letter)
+
+	buffer = plaintext[-last_letter:]
+	print(buffer)
+	token = 0
+	for char in buffer:
+		print("token: ", token)
+		token += 1
+		print("Compare", char, " with ", last_letter)
+		if char != last_letter:
+			raise Exception("Invalid padding")
+	return True
 
 
 if __name__ == '__main__':
