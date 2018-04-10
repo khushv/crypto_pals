@@ -1,6 +1,10 @@
 
 
 def pad(sample, block_size):
+	if len(sample) % 16 == 0:
+		padded_bytes = chr(block_size) * block_size
+		sample = sample + padded_bytes.encode('ascii')
+		return sample
 	sample_size = len(sample)
 	while sample_size > block_size:
 		sample_size -= block_size
