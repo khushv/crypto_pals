@@ -11,7 +11,6 @@ def pkcs7_pad_validate(plaintext):
 	return True
 	
 def pkcs7_pad_validate_bytes(plaintext):
-	print(plaintext)
 	last_letter = plaintext[-1]
 	"""
 	if last_letter > 16 and len(plaintext) % 16 == 0:
@@ -22,9 +21,9 @@ def pkcs7_pad_validate_bytes(plaintext):
 	buffer = plaintext[-last_letter:]
 	token = 0
 	for char in buffer:
-		print("token: ", token)
+		#print("token: ", token)
 		token += 1
-		print("Compare", char, " with ", last_letter)
+		#print("Compare", char, " with ", last_letter)
 		if char != last_letter:
 			#raise Exception("Invalid padding")
 			return False
