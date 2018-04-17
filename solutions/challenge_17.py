@@ -23,7 +23,15 @@ def decrypt_func(cipher_text, key, iv):
     else:
         return False
 
-
+def decrypt_func2(cipher_text, key, iv):
+    cipher_obj = AES.new(key, AES.MODE_CBC, iv)
+    decrypted_bytes = cipher_obj.decrypt(cipher_text)
+    #print("******")    
+    print(decrypted_bytes)
+    if pkcs7_pad_validate_bytes(decrypted_bytes):
+        return True
+    else:
+        return False
  
 
 if __name__ == '__main__':
@@ -49,29 +57,211 @@ if __name__ == '__main__':
 
     cipher_text = encrypt_func(plaintext, key, iv)
     print("Cipher text is: ", cipher_text)
-    #print("Length of cipher text is: ", len(cipher_text))
     decrypted = decrypt_func(cipher_text, key, iv)
-    print("test")
+
+    # To derive intermediate 
+    # P = Plaintext, I = intermediate, E = 16
+    # P16 = I16 ^ E16
+    # x01 = I16 ^ E'16
+    # I16 = x01 ^ E'16
+    # P16 = E16 ^ I16
+    # P16 = E16 ^ x01 ^ E'16
+
+    first_flag = True
+    intermediate = bytearray()
+    char_count = 0
 
 
-    blocks = keysize_blocks(BLOCK_SIZE, cipher_text)
-    second_last = bytearray(blocks[-2])
-    last_char = second_last[-1]
-    print("last character is: ", last_char)
+
+
+
+    char_count += 1
+    counter = -16 - char_count 
+
+    cipher_bytearray = bytearray(cipher_text)
+    analysis_char = cipher_bytearray[counter]
+    temp_counter = 0
+    for val in intermediate:
+        temp_counter += 1  
+        cipher_bytearray[counter + temp_counter] = val ^ char_count
+
+    
     for i in range(0, 255):
-        #import pdb; pdb.set_trace()
-        mod_second_last = second_last[0:-1]
-        mod_second_last.append(i)
-        mod_blocks = blocks
-        mod_blocks[-2] = mod_second_last
-        a = bytes().join(mod_blocks)
-        #
-        if decrypt_func(a, key, iv) and i != last_char:
-            print("Character in dec: ", i, " and in hex: ", hex(i), " and in ascii: ", chr(i))
+        cipher_bytearray[counter] = i
+        if decrypt_func(bytes(cipher_bytearray), key, iv):          
+            if first_flag:
+                if i == analysis_char:
+                    continue       
+            first_flag = False
+            i_value = i ^ char_count
+            intermediate.insert(0, i_value) 
+            print("Char is: ", analysis_char ^ i_value)
+            break 
 
 
+    char_count += 1
+    counter = -16 - char_count 
+
+    cipher_bytearray = bytearray(cipher_text)
+    analysis_char = cipher_bytearray[counter]
+    temp_counter = 0
+    for val in intermediate:
+        temp_counter += 1  
+        cipher_bytearray[counter + temp_counter] = val ^ char_count
+
+    
+    for i in range(0, 255):
+        cipher_bytearray[counter] = i
+        if decrypt_func(bytes(cipher_bytearray), key, iv):          
+            if first_flag:
+                if i == analysis_char:
+                    continue       
+            first_flag = False
+            i_value = i ^ char_count
+            intermediate.insert(0, i_value) 
+            print("Char is: ", analysis_char ^ i_value)
+            break 
 
 
+    char_count += 1
+    counter = -16 - char_count 
+
+    cipher_bytearray = bytearray(cipher_text)
+    analysis_char = cipher_bytearray[counter]
+    temp_counter = 0
+    for val in intermediate:
+        temp_counter += 1  
+        cipher_bytearray[counter + temp_counter] = val ^ char_count
+
+    
+    for i in range(0, 255):
+        cipher_bytearray[counter] = i
+        if decrypt_func(bytes(cipher_bytearray), key, iv):          
+            if first_flag:
+                if i == analysis_char:
+                    continue       
+            first_flag = False
+            i_value = i ^ char_count
+            intermediate.insert(0, i_value) 
+            print("Char is: ", analysis_char ^ i_value)
+            break 
+
+
+    char_count += 1
+    counter = -16 - char_count 
+
+    cipher_bytearray = bytearray(cipher_text)
+    analysis_char = cipher_bytearray[counter]
+    temp_counter = 0
+    for val in intermediate:
+        temp_counter += 1  
+        cipher_bytearray[counter + temp_counter] = val ^ char_count
+
+    
+    for i in range(0, 255):
+        cipher_bytearray[counter] = i
+        if decrypt_func(bytes(cipher_bytearray), key, iv):          
+            if first_flag:
+                if i == analysis_char:
+                    continue       
+            first_flag = False
+            i_value = i ^ char_count
+            intermediate.insert(0, i_value) 
+            print("Char is: ", analysis_char ^ i_value)
+            break 
+
+
+    char_count += 1
+    counter = -16 - char_count 
+
+    cipher_bytearray = bytearray(cipher_text)
+    analysis_char = cipher_bytearray[counter]
+    temp_counter = 0
+    for val in intermediate:
+        temp_counter += 1  
+        cipher_bytearray[counter + temp_counter] = val ^ char_count
+
+    
+    for i in range(0, 255):
+        cipher_bytearray[counter] = i
+        if decrypt_func(bytes(cipher_bytearray), key, iv):          
+            if first_flag:
+                if i == analysis_char:
+                    continue       
+            first_flag = False
+            i_value = i ^ char_count
+            intermediate.insert(0, i_value) 
+            print("Char is: ", analysis_char ^ i_value)
+            break 
+
+    char_count += 1
+    counter = -16 - char_count 
+
+    cipher_bytearray = bytearray(cipher_text)
+    analysis_char = cipher_bytearray[counter]
+    temp_counter = 0
+    for val in intermediate:
+        temp_counter += 1  
+        cipher_bytearray[counter + temp_counter] = val ^ char_count
+
+    
+    for i in range(0, 255):
+        cipher_bytearray[counter] = i
+        if decrypt_func(bytes(cipher_bytearray), key, iv):          
+            if first_flag:
+                if i == analysis_char:
+                    continue       
+            first_flag = False
+            i_value = i ^ char_count
+            intermediate.insert(0, i_value) 
+            print("Char is: ", analysis_char ^ i_value)
+            break 
+
+    char_count += 1
+    counter = -16 - char_count 
+
+    cipher_bytearray = bytearray(cipher_text)
+    analysis_char = cipher_bytearray[counter]
+    temp_counter = 0
+    for val in intermediate:
+        temp_counter += 1  
+        cipher_bytearray[counter + temp_counter] = val ^ char_count
+
+    
+    for i in range(0, 255):
+        cipher_bytearray[counter] = i
+        if decrypt_func(bytes(cipher_bytearray), key, iv):          
+            if first_flag:
+                if i == analysis_char:
+                    continue       
+            first_flag = False
+            i_value = i ^ char_count
+            intermediate.insert(0, i_value) 
+            print("Char is: ", analysis_char ^ i_value)
+            break 
+
+    char_count += 1
+    counter = -16 - char_count 
+
+    cipher_bytearray = bytearray(cipher_text)
+    analysis_char = cipher_bytearray[counter]
+    temp_counter = 0
+    for val in intermediate:
+        temp_counter += 1  
+        cipher_bytearray[counter + temp_counter] = val ^ char_count
+
+    
+    for i in range(0, 255):
+        cipher_bytearray[counter] = i
+        if decrypt_func(bytes(cipher_bytearray), key, iv):          
+            if first_flag:
+                if i == analysis_char:
+                    continue       
+            first_flag = False
+            i_value = i ^ char_count
+            intermediate.insert(0, i_value) 
+            print("Char is: ", analysis_char ^ i_value)
+            break 
 
 
 
