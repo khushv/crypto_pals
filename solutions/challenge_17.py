@@ -51,13 +51,14 @@ if __name__ == '__main__':
     MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93"""
     clean_sample = sample.split("\n")
     clean_sample = [string.strip(" ") for string in clean_sample]
-    #plaintext = pad(choice(clean_sample).encode('ascii'), BLOCK_SIZE)
-    plaintext = pad(clean_sample[1].encode('ascii'), BLOCK_SIZE)
+    plaintext = pad(choice(clean_sample).encode('ascii'), BLOCK_SIZE)
+    #plaintext = pad(clean_sample[1].encode('ascii'), BLOCK_SIZE)
     print(plaintext)
     
     cipher_text_original = encrypt_func(plaintext, key, iv)
     
-    cipher_text = bytearray(16) + cipher_text_original
+    #cipher_text = bytearray(16) + cipher_text_original
+    cipher_text = bytearray(b'0' * BLOCK_SIZE) + cipher_text_original    
     #import pdb; pdb.set_trace()
     print("Cipher text is: ", cipher_text)
     decrypted = decrypt_func(cipher_text, key, iv)
@@ -102,7 +103,9 @@ if __name__ == '__main__':
                 first_flag = False
                 i_value = i ^ char_count
                 intermediate.insert(0, i_value) 
-                print("Char is: ", chr(analysis_char ^ i_value) )
+                #print("Char is: ", chr(analysis_char ^ i_value) )
+                print("Char is: ", analysis_char ^ i_value)
+                print("Intermediate is: ", i_value)                
                 plaintext_full = chr(analysis_char ^ i_value) + plaintext_full
                 
                 break 
@@ -117,7 +120,7 @@ if __name__ == '__main__':
             first_flag = True  
             intermediate_full += intermediate
             intermediate = bytearray()
-            
-    print(plaintext_full)
+    print(plaintext[16:])        
+    print(plaintext_full[16:])
 
 
