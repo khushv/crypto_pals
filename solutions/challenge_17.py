@@ -1,5 +1,6 @@
 from random import choice
 from os import urandom
+from base64 import b64decode
 from Cryptodome.Cipher import AES
 
 from challenge_6 import keysize_blocks
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93"""
     clean_sample = sample.split("\n")
     clean_sample = [string.strip(" ") for string in clean_sample]
-    plaintext = pad(choice(clean_sample).encode('ascii'), BLOCK_SIZE)
+    plaintext = pad(b64decode(choice(clean_sample)), BLOCK_SIZE)
     #plaintext = pad(clean_sample[1].encode('ascii'), BLOCK_SIZE)
     print(plaintext)
     
@@ -120,7 +121,7 @@ if __name__ == '__main__':
             first_flag = True  
             intermediate_full += intermediate
             intermediate = bytearray()
-    print(plaintext[16:])        
+    #print(plaintext[16:])        
     print(plaintext_full[16:])
 
 
