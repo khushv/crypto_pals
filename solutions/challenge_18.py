@@ -27,9 +27,10 @@ def AES_CTR_decrypt(key, nonce, ciphertext):
     decrypted_bytes = cipher_obj.decrypt(cipher_text)
     return decrypted_bytes
 
-def AES_CTR_crypt(key, nonce, text):
+def AES_CTR_crypt(key, nonce, text, BLOCK_SIZE=16):
     blocks = keysize_blocks(BLOCK_SIZE, text)
-    key = key.encode('ascii')
+    if type(key) != bytes:
+        key = key.encode('ascii')
     counter = 0
     final_text = bytearray()
     for block in blocks:
@@ -46,13 +47,8 @@ if __name__ == '__main__':
     BLOCK_SIZE = 16
     cipher_text = b64decode("L77na/nrFsKvynd6HzOoG7GHTLXsTVu9qvY/2syLXzhPweyyMTJULu/6/kXX0KSvoOLSFQ==")
     print(cipher_text)
-    key = "YELLOW SUBMARINE"  
+    key = "YELLOW SUBMARINE"
     nonce = (0).to_bytes(8, byteorder="little")
 
     result = AES_CTR_crypt(key, nonce, cipher_text)
     print(result.decode('ascii'))
-    
-
-
-    
-
