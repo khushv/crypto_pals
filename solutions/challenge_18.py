@@ -51,4 +51,5 @@ if __name__ == '__main__':
     nonce = (0).to_bytes(8, byteorder="little")
 
     result = AES_CTR_crypt(key, nonce, cipher_text)
-    print(result.decode('ascii'))
+    #print(result.decode('ascii'))
+    print(len(result))
